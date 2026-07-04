@@ -87,3 +87,37 @@ The model does not have direct access to the file system or the ability to execu
 Python is the one that executes the functions and returns the results to the model.
 so the model can focus on reasoning and decision-making, while Python handles the actual execution of tasks.
 The results of the functions are returned to the model, which can then use that information to make decisions and take further actions."""
+
+def read_file(file_path):
+    """Reads the content of a file."""
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+        return {"content": content}
+    except Exception as e:
+        return {"error": str(e)}
+    
+def write_file(file_path, content):
+    """Writes content to a file."""
+    try:
+        with open(file_path, 'w') as file:
+            file.write(content)
+        return {"message": f"Content written to {file_path}"}
+    except Exception as e:
+        return {"error": str(e)}
+    
+def list_files(directory_path):
+    """Lists all files in a directory."""
+    try:
+        files = os.listdir(directory_path)
+        return {"files": files}
+    except Exception as e:
+        return {"error": str(e)}
+    
+def run_test(test_file_path):
+    """Runs the test in the test.py file and returns the output, including any errors."""
+    try:
+        result = subprocess.run(['python', test_file_path], capture_output=True, text=True)
+        return {"stdout": result.stdout, "stderr": result.stderr}
+    except Exception as e:
+        return {"error": str(e)}
